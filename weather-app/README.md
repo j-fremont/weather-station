@@ -14,8 +14,8 @@ $ npm install -g create-react-app
 Load dependencies.
 
 ```
-[weather-station]~/projets_react/weather-app$ npm install --save react react-dom
-[weather-station]~/projets_react/weather-app$ npm install --save bootstrap reactstrap
-[weather-station]~/projets_react/weather-app$ npm install --save mqtt
-[weather-station]~/projets_react/weather-app$ npm install --save influx
+[weather-app]$ npm install --save react react-dom
+[weather-app]$ npm install --save bootstrap reactstrap
+[weather-app]$ npm install --save mqtt
+[weather-app]$ npm install --save influx
 ```
