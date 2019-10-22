@@ -1,10 +1,10 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import io from "socket.io-client";
+//import io from "socket.io-client";
 
 const Influx = require('influx');
 
-const socket = io('localhost:9000');
+//const socket = io('localhost:9000');
 
 /*
  * Schémas InfluxDB
@@ -34,10 +34,10 @@ export default class MyChart extends React.Component {
   }
 
   componentDidMount() {
-  
+
     setInterval(() => {
       var points = [];
-      influx.query("select mean(temperature) as temperature, mean(humidity) as humidity, mean(luminosity) as luminosity from weather where sensor='room1' group by time(" + this.props.mean + ") fill(0) order by desc limit 48").then(results => {
+      influx.query("select mean(temperature) as temperature, mean(humidity) as humidity, mean(luminosity) as luminosity from weather where sensor='" + this.props.mode + "' group by time(" + this.props.mean + ") fill(0) order by desc limit 48").then(results => {
         results.reverse().map(result => {
           points = [...points,
             {
@@ -48,15 +48,15 @@ export default class MyChart extends React.Component {
             }
           ]
         });
-      
+
         this.setState({
           points: points
         });
       });
-    
+
     //}, 600000); // 10 minutes
     }, 10000); // 10 secondes
-  
+
 /*
     var temperature, humidity, luminosity;
 
@@ -71,15 +71,15 @@ export default class MyChart extends React.Component {
             luminosity: Number(luminosity),
             datetime: new Date().toLocaleString()
           }];
-          
+
         if (points.length > 144) { // Points 10 minutes sur 24 heures
           points.shift();
         }
-        
+
         this.setState({
           points: points
-        });        
-        
+        });
+
       //}, 600000); // 10 minutes
       }, 10000); // 10 secondes
 

@@ -7,20 +7,38 @@ const style = {
   'margin-right': '25px'
 };
 
-const MyMedia = () => {
-  return (
-    <Media>
-      <Media left href="#">
-        <Media style={style} object src={Logo} alt="Logo" />
-      </Media>
-      <Media body>
-        <Media heading>
-          Weather Station
-        </Media>
-        Pour la maison...
-      </Media>
-    </Media>
-  );
-};
+export default class MyMedia extends React.Component {
 
-export default MyMedia;
+  modeName = () => {
+    console.log(this.props.mode)
+    switch(this.props.mode) {
+      case 'inside':
+        return 'Capteurs intérieurs';
+      case 'outside':
+        return 'Capteurs extérieurs';
+      case 'command':
+        return 'Mode commande';
+      default:
+        return 'Mode inconnu';
+    }
+  }
+
+  render() {
+
+    const mode = this.modeName();
+
+    return (
+      <Media>
+        <Media left href="#">
+          <Media style={style} object src={Logo} alt="Logo" />
+        </Media>
+        <Media body>
+          <Media heading>
+            Station météo
+          </Media>
+          {mode}
+        </Media>
+      </Media>
+    );
+  }
+};

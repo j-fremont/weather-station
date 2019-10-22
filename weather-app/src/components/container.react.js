@@ -1,50 +1,54 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import MyMedia from './media.react';
-import MyTemperature from './temperature.react';
-import MyHumidity from './humidity.react';
-import MyLuminosity from './luminosity.react';
-import MyChart from './chart.react';
-import MyControls from './controls.react';
+import MyDropdown from './dropdown.react';
+import MyContainerSensor from './container.sensor.react';
+import MyContainerCommand from './container.command.react';
 
 export default class MyContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mean: '10s'
+      mode: 'inside'
     }
   }
 
-  changeMean = mean => {
+  changeMode = mode => {
     this.setState({
-      mean: mean
+      mode: mode
     });
+  }
+
+  currentContainer = () => {
+    console.log(this.state.mode)
+    if (this.state.mode === 'inside' || this.state.mode === 'outside') {
+      return (
+        <MyContainerSensor
+          mode={this.state.mode}
+          changeMode={this.changeMode} />
+        );
+    } else {
+      return (
+        <MyContainerCommand />
+      );
+    }
   }
 
   render() {
 
-    const mean = this.state.mean;
+    var container = this.currentContainer();
 
     return (
       <Container fluid={true}>
         <Row>
           <Col xs="4">
-            <MyMedia />
+            <MyMedia mode={this.state.mode}/>
           </Col>
           <Col xs="8">
-            <MyControls changeMean={this.changeMean} />
+            <MyDropdown changeMode={this.changeMode} />
           </Col>
         </Row>
-        <Row>
-          <Col xs="1">
-            <MyTemperature />
-            <MyHumidity />
-            <MyLuminosity />
-          </Col>
-          <Col xs="11">
-            <MyChart mean={mean}/>
-          </Col>
-        </Row>
+        {container}
       </Container>
     );
   }

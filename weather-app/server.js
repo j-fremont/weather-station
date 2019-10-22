@@ -23,7 +23,7 @@ const influx = new Influx.InfluxDB({
     },
     tags: ['sensor']
   }]
-}); 
+});
 
 /*
 const influx_temperature = new Influx.InfluxDB({
@@ -82,12 +82,12 @@ client.on('connect', () => {
 client.on('message', (topic, message) => {
 
   console.log('message from topic ' + topic + ' - message : ' + message);
-  
+
   if (topic==='temperature') {
     last_temperature=parseFloat(message).toFixed(1).toString();
     influx.writePoints([{
       measurement: 'weather',
-      tags: { sensor:'room1' },
+      tags: { sensor:'inside' },
       fields: {
         temperature: last_temperature
       }
@@ -103,7 +103,7 @@ client.on('message', (topic, message) => {
     last_humidity=parseFloat(message).toFixed(1).toString()
     influx.writePoints([{
       measurement: 'weather',
-      tags: { sensor:'room1' },
+      tags: { sensor:'inside' },
       fields: {
         humidity: last_humidity
       }
@@ -119,7 +119,7 @@ client.on('message', (topic, message) => {
     last_luminosity=parseFloat(message).toFixed(1).toString()
     influx.writePoints([{
       measurement: 'weather',
-      tags: { sensor:'room1' },
+      tags: { sensor:'inside' },
       fields: {
         luminosity: last_luminosity
       }
@@ -158,13 +158,13 @@ setInterval(() => {
 io.on('connection', socket => {
 
   console.log('connection web socket');
-  
+
   setInterval(() => {
     socket.emit('sock_temperature', last_temperature);
     socket.emit('sock_humidity', last_humidity);
     socket.emit('sock_luminosity', last_luminosity);
   }, 10000);
-  
+
 });
 
 http.listen(9000, () => {
