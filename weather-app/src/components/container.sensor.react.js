@@ -10,10 +10,18 @@ export default class MyContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mean: '10s'
+      mean: '10s' // Mean interval for InfluxDB readings.
     }
   }
-
+  
+  /* The chart component only queries the last 48 values in InfluxDB with interval mean.
+   * mean = '10s' : queries the last 8 minutes (useful for tests).
+   * mean = '30m' : queries the last day.
+   * mean = '1h' : queries the last two days.
+   * mean = '3h' : queries the last six days.
+   * mean = '15h' : queries the last 30 days.
+   */
+  
   changeMean = mean => {
     this.setState({
       mean: mean

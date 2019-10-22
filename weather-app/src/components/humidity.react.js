@@ -1,7 +1,9 @@
 import React from 'react';
 import io from "socket.io-client";
 
-const socket = io('localhost:9000');
+const config = require('../config');
+
+const socket = io(config.server.host + ':' + config.server.port);
 
 export default class MyHumidity extends React.Component {
   constructor(props) {
