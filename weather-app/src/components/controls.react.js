@@ -13,10 +13,10 @@ export default class MyControls extends React.Component {
     return (
       <div>
         <ButtonGroup>
-          <Button color="secondary" onClick={() => this.props.changeMean('10s')}>1 jour</Button> 
-          <Button color="secondary" onClick={() => this.props.changeMean('30s')}>2 jours</Button> 
-          <Button color="secondary" onClick={() => this.props.changeMean('1m')}>6 jours</Button> 
-          <Button color="secondary" onClick={() => this.props.changeMean('2m')}>30 jours</Button> 
+          <Button color="secondary" onClick={() => this.props.changeMean('30m')}>1 jour</Button> 
+          <Button color="secondary" onClick={() => this.props.changeMean('1h')}>2 jours</Button> 
+          <Button color="secondary" onClick={() => this.props.changeMean('3h')}>6 jours</Button> 
+          <Button color="secondary" onClick={() => this.props.changeMean('15h')}>30 jours</Button> 
         </ButtonGroup>
       </div>
     );

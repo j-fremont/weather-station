@@ -71,6 +71,10 @@ client.on('message', (topic, message) => { // Topic messages
 io.on('connection', socket => { // Emit last readings in the web socket
 
   console.log('connection web socket');
+  
+  socket.emit('sock_temperature', last_temperature);
+  socket.emit('sock_humidity', last_humidity);
+  socket.emit('sock_luminosity', last_luminosity);
 
   setInterval(() => {
     socket.emit('sock_temperature', last_temperature);

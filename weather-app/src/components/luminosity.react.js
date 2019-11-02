@@ -3,7 +3,7 @@ import io from "socket.io-client";
 
 const config = require('../config');
 
-const socket = io(config.server.host + ':' + config.server.port);
+const socket = io('ws://' + config.server.host + ':' + config.server.port);
 
 export default class MyLuminosity extends React.Component {
   constructor(props) {

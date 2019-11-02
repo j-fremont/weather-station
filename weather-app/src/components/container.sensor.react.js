@@ -10,7 +10,7 @@ export default class MyContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mean: '10s' // Mean interval for InfluxDB readings.
+      mean: '30m' // Mean interval for InfluxDB readings.
     }
   }
   
