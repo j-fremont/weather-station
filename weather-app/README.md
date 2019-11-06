@@ -18,4 +18,5 @@ Load dependencies.
 [weather-app]$ npm install --save bootstrap reactstrap
 [weather-app]$ npm install --save mqtt
 [weather-app]$ npm install --save influx
+[weather-app]$ npm install --save axios
 ```
