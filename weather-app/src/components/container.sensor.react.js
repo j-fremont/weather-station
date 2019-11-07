@@ -10,10 +10,10 @@ export default class MyContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mean: '30m' // Mean interval for InfluxDB readings.
+      mean: '10s' // Mean interval for InfluxDB readings.
     }
   }
-  
+
   /* The chart component only queries the last 48 values in InfluxDB with interval mean.
    * mean = '10s' : queries the last 8 minutes (useful for tests).
    * mean = '30m' : queries the last day.
@@ -21,22 +21,40 @@ export default class MyContainer extends React.Component {
    * mean = '3h' : queries the last six days.
    * mean = '15h' : queries the last 30 days.
    */
-  
+
   changeMean = mean => {
     this.setState({
       mean: mean
     });
   }
 
+  currentSensors = () => {
+    if (this.props.mode === 'inside') {
+      return (
+        <Col xs="1">
+          <MyTemperature />
+          <MyHumidity />
+        </Col>
+      );
+    } else {
+      return (
+        <Col xs="1">
+          <MyTemperature />
+          <MyHumidity />
+          <MyLuminosity />
+        </Col>
+      );
+    }
+  }
+
   render() {
+
+    var sensors = this.currentSensors();
+
     return (
       <Container fluid={true}>
         <Row>
-          <Col xs="1">
-            <MyTemperature />
-            <MyHumidity />
-            <MyLuminosity />
-          </Col>
+          {sensors}
           <Col xs="11">
             <Row>
               <MyChart

@@ -1,9 +1,18 @@
+'use strict';
+
 const app = require('express')();
+const cors = require('cors');
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const mqtt = require('mqtt');
 const Influx = require('influx');
 const config = require('./src/config');
+
+var historyRouter = require('./routes/history');
+
+app.use(cors());
+
+app.use('/history', historyRouter);
 
 var last_temperature=0, last_humidity=0, last_luminosity=0; // Last readings in MQTT server
 
@@ -71,7 +80,7 @@ client.on('message', (topic, message) => { // Topic messages
 io.on('connection', socket => { // Emit last readings in the web socket
 
   console.log('connection web socket');
-  
+
   socket.emit('sock_temperature', last_temperature);
   socket.emit('sock_humidity', last_humidity);
   socket.emit('sock_luminosity', last_luminosity);
