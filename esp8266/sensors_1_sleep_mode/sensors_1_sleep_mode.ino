@@ -2,8 +2,8 @@
 #include <ESP8266WiFi.h>
 #include <DHT.h>
 
-#define WIFI_SSID "MY_SSID"
-#define WIFI_PASS "MY_PASS"
+#define WIFI_SSID "NEUF_4EEC"
+#define WIFI_PASS "yosickkobkowgawboit0"
 
 #define MOSQUITTO_IP "192.168.1.10"
 
@@ -49,15 +49,14 @@ void setup() {
   //float l_pct = map(l, 25, 800, 0, 100);
   //float l_pct = 100 - ((l - MIN_VALUE) * 100 / (MAX_VALUE - MIN_VALUE));
 
-  mqttClient.publish("temperature", String(t).c_str());
-  mqttClient.publish("humidity", String(h).c_str());
+  mqttClient.publish("temperature_inside", String(t).c_str());
+  mqttClient.publish("humidity_inside", String(h).c_str());
   //mqttClient.publish("luminosity", String(l_pct).c_str());
 
   delay(1000); // Time to finish pub before sleeping
   
   Serial.println("Go to sleep...");
 
-  //ESP.deepSleep(10e6);
   ESP.deepSleep(600e6); // 10 minutes...
 }
 

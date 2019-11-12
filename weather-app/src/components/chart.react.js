@@ -4,24 +4,6 @@ import axios from "axios";
 
 const config = require('../config');
 
-/*
-const Influx = require('influx');
-
-const influx = new Influx.InfluxDB({ // InfluxDB schema
-  host: config.influxdb.host,
-  database: 'homedb',
-  schema: [{
-    measurement: 'weather',
-    fields: {
-       temperature: Influx.FieldType.FLOAT,
-       humidity: Influx.FieldType.FLOAT,
-       luminosity: Influx.FieldType.FLOAT
-    },
-    tags: ['sensor']
-  }]
-});
-*/
-
 export default class MyChart extends React.Component {
   constructor(props) {
     super(props)
@@ -43,22 +25,6 @@ export default class MyChart extends React.Component {
         points: response.data
       });
     });
-    /*var points = [];
-    influx.query("select mean(temperature) as temperature, mean(humidity) as humidity, mean(luminosity) as luminosity from weather where sensor='" + this.props.mode + "' group by time(" + this.props.mean + ") fill(0) order by desc limit 48").then(results => {
-      results.reverse().map(result => {
-        points = [...points,
-          {
-            temperature: result.temperature,
-            humidity: result.humidity,
-            luminosity: result.luminosity,
-            datetime: result.time.toString().split(' GMT')[0]
-          }
-        ]
-      });
-      this.setState({
-        points: points
-      });
-    });*/
   };
   
   currentLineChart = () => {

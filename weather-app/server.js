@@ -10,11 +10,11 @@ const config = require('./src/config');
 
 var historyRouter = require('./routes/history');
 
+var websock = undefined;
+
 app.use(cors());
 
 app.use('/history', historyRouter);
-
-var last_temperature=0, last_humidity=0, last_luminosity=0; // Last readings in MQTT server
 
 const influx = new Influx.InfluxDB({ // InfluxDB schema
   host: config.influxdb.host,
@@ -30,67 +30,91 @@ const influx = new Influx.InfluxDB({ // InfluxDB schema
   }]
 });
 
+const writeTemperature = (sensor, value) => {
+  influx.writePoints([{ // ...and add a new point in InfluxDB.
+    measurement: 'weather',
+    tags: { sensor: sensor },
+    fields: {
+      temperature: value
+    }
+  }]);
+};
+
+const writeHumidity = (sensor, value) => {
+  influx.writePoints([{ // ...and add a new point in InfluxDB.
+    measurement: 'weather',
+    tags: { sensor: sensor },
+    fields: {
+      humidity: value
+    }
+  }]);
+};
+
+const writeLuminosity = (sensor, value) => {
+  influx.writePoints([{ // ...and add a new point in InfluxDB.
+    measurement: 'weather',
+    tags: { sensor: sensor },
+    fields: {
+      luminosity: value
+    }
+  }]);
+};
+
 var client = mqtt.connect('mqtt://' + config.mqtt.host + ':' + config.mqtt.port);
 
 client.on('connect', () => {
 
-  console.log('connect');
+  console.log('connection mqtt topics');
 
-  client.subscribe('temperature'); // Topic subscriptions
-  client.subscribe('humidity');
-  client.subscribe('luminosity');
+  client.subscribe('temperature_inside'); // Topic subscriptions
+  client.subscribe('temperature_outside');
+  client.subscribe('humidity_inside');
+  client.subscribe('humidity_outside');
+  client.subscribe('luminosity_outside');
 });
 
 client.on('message', (topic, message) => { // Topic messages
 
   console.log('message from topic ' + topic + ' - message : ' + message);
 
-  if (topic==='temperature') {
-    last_temperature=parseFloat(message).toFixed(1).toString(); // Update last reading...
-    influx.writePoints([{ // ...and add a new point in InfluxDB.
-      measurement: 'weather',
-      tags: { sensor:'inside' },
-      fields: {
-        temperature: last_temperature
-      }
-    }]);
+  if (topic==='temperature_inside') {
+    const value=parseFloat(message).toFixed(1).toString(); // Update last reading...
+    writeTemperature('inside', value);
+    emit('sock_temperature_inside', value);
   }
-  else if (topic==='humidity') {
-    last_humidity=parseFloat(message).toFixed(1).toString()
-    influx.writePoints([{
-      measurement: 'weather',
-      tags: { sensor:'inside' },
-      fields: {
-        humidity: last_humidity
-      }
-    }]);
+  else if (topic==='temperature_outside') {
+    const value=parseFloat(message).toFixed(1).toString();
+    writeTemperature('outside', value);
+    emit('sock_temperature_outside', value);
   }
-  else if (topic==='luminosity') {
-    last_luminosity=parseFloat(message).toFixed(1).toString()
-    influx.writePoints([{
-      measurement: 'weather',
-      tags: { sensor:'inside' },
-      fields: {
-        luminosity: last_luminosity
-      }
-    }]);
+  else if (topic==='humidity_inside') {
+    const value=parseFloat(message).toFixed(1).toString();
+    writeHumidity('inside', value);
+    emit('sock_humidity_inside', value);
+  }
+  else if (topic==='humidity_outside') {
+    const value=parseFloat(message).toFixed(1).toString();
+    writeHumidity('outside', value);
+    emit('sock_humidity_outside', value);
+  }
+  else if (topic==='luminosity_outside') {
+    const value=parseFloat(message).toFixed(1).toString();
+    writeLuminosity('outside', value);
+    emit('sock_luminosity_outside', value);
   }
 });
 
+const emit = (message, value) => {
+  if (websock===undefined) {
+    console.log('websocket undefined...');
+  } else {
+    websock.emit(message, value);
+  }
+};
+
 io.on('connection', socket => { // Emit last readings in the web socket
-
   console.log('connection web socket');
-
-  socket.emit('sock_temperature', last_temperature);
-  socket.emit('sock_humidity', last_humidity);
-  socket.emit('sock_luminosity', last_luminosity);
-
-  setInterval(() => {
-    socket.emit('sock_temperature', last_temperature);
-    socket.emit('sock_humidity', last_humidity);
-    socket.emit('sock_luminosity', last_luminosity);
-  }, config.interval.emit);
-
+  websock=socket;
 });
 
 http.listen(config.server.port, () => {

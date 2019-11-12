@@ -31,9 +31,9 @@ router.get('/:mode/:mean', function(req, res, next) {
     results.reverse().map(result => {
       points = [...points,
         {
-          temperature: result.temperature,
-          humidity: result.humidity,
-          luminosity: result.luminosity,
+          temperature: result.temperature.toFixed(1),
+          humidity: result.humidity.toFixed(1),
+          luminosity: result.luminosity.toFixed(1),
           datetime: result.time.toString().split(' GMT')[0]
         }
       ]

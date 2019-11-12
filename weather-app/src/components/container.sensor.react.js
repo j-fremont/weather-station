@@ -5,12 +5,30 @@ import MyHumidity from './humidity.react';
 import MyLuminosity from './luminosity.react';
 import MyChart from './chart.react';
 import MyControls from './controls.react';
+import io from "socket.io-client";
 
-export default class MyContainer extends React.Component {
+const config = require('../config');
+
+const socket = io('ws://' + config.server.host + ':' + config.server.port);
+
+export default class MyContainerSensor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      mean: '10s' // Mean interval for InfluxDB readings.
+      mean: '30m', // Mean interval for InfluxDB readings.
+      last: { // Last receives from web sockets.
+        temperature: {
+          inside: 0,
+          outside:0
+        },
+        humidity: {
+          inside: 0,
+          outside:0
+        },
+        luminosity: {
+          outside: 0
+        }
+      }
     }
   }
 
@@ -22,6 +40,54 @@ export default class MyContainer extends React.Component {
    * mean = '15h' : queries the last 30 days.
    */
 
+  componentDidMount() {
+
+    socket.on('connect', () => {
+      console.log("Connected to the server socket...");
+    });
+
+    socket.on('sock_temperature_inside', (payload) => {
+      var state = this.state;
+      state.last.temperature.inside=payload;
+      this.setState({
+        state
+      });
+    });
+    
+    socket.on('sock_temperature_outside', (payload) => {
+      var state = this.state;
+      state.last.temperature.outside=payload;
+      this.setState({
+        state
+      });
+    });
+    
+    socket.on('sock_humidity_inside', (payload) => {
+      var state = this.state;
+      state.last.humidity.inside=payload;
+      this.setState({
+        state
+      });
+    });
+    
+    socket.on('sock_humidity_outside', (payload) => {
+      var state = this.state;
+      state.last.humidity.outside=payload;
+      this.setState({
+        state
+      });
+    });    
+    
+    socket.on('sock_luminosity_outside', (payload) => {
+      var state = this.state;
+      state.last.luminosity.outside=payload;
+      this.setState({
+        state
+      });
+    });          
+    
+  };
+
   changeMean = mean => {
     this.setState({
       mean: mean
@@ -32,16 +98,16 @@ export default class MyContainer extends React.Component {
     if (this.props.mode === 'inside') {
       return (
         <Col xs="1">
-          <MyTemperature />
-          <MyHumidity />
+          <MyTemperature value={this.state.last.temperature.inside} />
+          <MyHumidity value={this.state.last.humidity.inside} />
         </Col>
       );
     } else {
       return (
         <Col xs="1">
-          <MyTemperature />
-          <MyHumidity />
-          <MyLuminosity />
+          <MyTemperature value={this.state.last.temperature.outside} />
+          <MyHumidity value={this.state.last.humidity.outside} />
+          <MyLuminosity value={this.state.last.luminosity.outside} />
         </Col>
       );
     }

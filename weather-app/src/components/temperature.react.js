@@ -6,25 +6,25 @@ const config = require('../config');
 const socket = io('ws://' + config.server.host + ':' + config.server.port);
 
 export default class MyTemperature extends React.Component {
-  constructor(props) {
+  /*constructor(props) {
     super(props)
     this.state = {
       temperature: undefined
     }
-  }
+  }*/
 
-  componentDidMount() {
+  /*componentDidMount() {
 
     socket.on('connect', () => {
       console.log("Connected to the server socket...");
     });
 
-    socket.on('sock_temperature', (payload) => {
+    socket.on(this.props.socket, (payload) => {
       this.setState({
         temperature: payload
       });
     })
-  };
+  };*/
 
   render() {
 
@@ -52,7 +52,7 @@ export default class MyTemperature extends React.Component {
               x={10}
               y={80}
               fill={'white'}
-              font-size={'32px'}>{this.state.temperature}°
+              font-size={'32px'}>{this.props.value}°
             </text>
           </g>
         </svg>

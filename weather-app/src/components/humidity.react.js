@@ -6,7 +6,7 @@ const config = require('../config');
 const socket = io('ws://' + config.server.host + ':' + config.server.port);
 
 export default class MyHumidity extends React.Component {
-  constructor(props) {
+  /*constructor(props) {
     super(props)
     this.state = {
       humidity: undefined
@@ -19,12 +19,12 @@ export default class MyHumidity extends React.Component {
       console.log("Connected to the server socket...");
     });
 
-    socket.on('sock_humidity', (payload) => {
+    socket.on(this.props.socket, (payload) => {
       this.setState({
         humidity: payload
       });
     })
-  };
+  };*/
 
   render() {
     return (
@@ -51,7 +51,7 @@ export default class MyHumidity extends React.Component {
               x={10}
               y={80}
               fill={'white'}
-              font-size={'32px'}>{this.state.humidity}%
+              font-size={'32px'}>{this.props.value}%
             </text>
           </g>
         </svg>
