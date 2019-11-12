@@ -2,11 +2,11 @@
 var config = module.exports = {};
 
 config.influxdb = {
-  host: '192.168.1.10'
+  host: 'dadi.pleiade.edf.fr'
 };
 
 config.mqtt = {
-  host: '192.168.1.10',
+  host: 'dadi.pleiade.edf.fr',
   port: 1883
 };
 

@@ -5,33 +5,12 @@ import axios from "axios";
 const config = require('../config');
 
 export default class MyChart extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      points: []
-    }
-  }
 
-  componentDidMount() {
-    this.getPoints();
-    setInterval(() => {
-      this.getPoints();
-    }, config.interval.query);
-  };
-
-  getPoints() {
-    axios.get("http://" + config.server.host + ":" + config.server.port + "/history/" + this.props.mode + "/" + this.props.mean).then((response) => {
-      this.setState({
-        points: response.data
-      });
-    });
-  };
-  
   currentLineChart = () => {
     if (this.props.mode === 'inside') {
       return (
         <LineChart
-          data={this.state.points}
+          data={this.props.points}
           margin={{top: 10, right: 30, left: 0, bottom: 0}}>
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="datetime"/>
@@ -45,7 +24,7 @@ export default class MyChart extends React.Component {
     } else {
       return (
         <LineChart
-          data={this.state.points}
+          data={this.props.points}
           margin={{top: 10, right: 30, left: 0, bottom: 0}}>
           <CartesianGrid strokeDasharray="3 3"/>
           <XAxis dataKey="datetime"/>
@@ -58,12 +37,12 @@ export default class MyChart extends React.Component {
         </LineChart>
       );
     }
-  }  
+  }
 
   render() {
-  
+
     var lineChart = this.currentLineChart();
-  
+
     return (
       <ResponsiveContainer width="100%" height={400}>
         {lineChart}

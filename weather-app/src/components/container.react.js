@@ -22,9 +22,7 @@ export default class MyContainer extends React.Component {
   currentContainer = () => {
     if (this.state.mode === 'inside' || this.state.mode === 'outside') {
       return (
-        <MyContainerSensor
-          mode={this.state.mode}
-          changeMode={this.changeMode} />
+        <MyContainerSensor mode={this.state.mode} />
         );
     } else {
       return (

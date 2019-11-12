@@ -9,12 +9,14 @@ const Influx = require('influx');
 const config = require('./src/config');
 
 var historyRouter = require('./routes/history');
+var lastRouter = require('./routes/last');
 
 var websock = undefined;
 
 app.use(cors());
 
 app.use('/history', historyRouter);
+app.use('/last', lastRouter);
 
 const influx = new Influx.InfluxDB({ // InfluxDB schema
   host: config.influxdb.host,
@@ -77,30 +79,31 @@ client.on('message', (topic, message) => { // Topic messages
 
   console.log('message from topic ' + topic + ' - message : ' + message);
 
-  if (topic==='temperature_inside') {
-    const value=parseFloat(message).toFixed(1).toString(); // Update last reading...
-    writeTemperature('inside', value);
-    emit('sock_temperature_inside', value);
-  }
-  else if (topic==='temperature_outside') {
-    const value=parseFloat(message).toFixed(1).toString();
-    writeTemperature('outside', value);
-    emit('sock_temperature_outside', value);
-  }
-  else if (topic==='humidity_inside') {
-    const value=parseFloat(message).toFixed(1).toString();
-    writeHumidity('inside', value);
-    emit('sock_humidity_inside', value);
-  }
-  else if (topic==='humidity_outside') {
-    const value=parseFloat(message).toFixed(1).toString();
-    writeHumidity('outside', value);
-    emit('sock_humidity_outside', value);
-  }
-  else if (topic==='luminosity_outside') {
-    const value=parseFloat(message).toFixed(1).toString();
-    writeLuminosity('outside', value);
-    emit('sock_luminosity_outside', value);
+  const value = parseFloat(message).toFixed(1).toString();
+
+  switch (topic) {
+    case 'temperature_inside':
+      writeTemperature('inside', value);
+      emit('sock_temperature_inside', value);
+      break;
+    case 'temperature_outside':
+      writeTemperature('outside', value);
+      emit('sock_temperature_outside', value);
+      break;
+    case 'humidity_inside':
+      writeHumidity('inside', value);
+      emit('sock_humidity_inside', value);
+      break;
+    case 'humidity_outside':
+      writeHumidity('outside', value);
+      emit('sock_humidity_outside', value);
+      break;
+    case 'luminosity_outside':
+      writeLuminosity('outside', value);
+      emit('sock_luminosity_outside', value);
+      break;
+    default:
+      console.log('Topic ' + topic + 'unknown...');
   }
 });
 
@@ -116,6 +119,7 @@ io.on('connection', socket => { // Emit last readings in the web socket
   console.log('connection web socket');
   websock=socket;
 });
+
 
 http.listen(config.server.port, () => {
   console.log('listening on *:' + config.server.port);
