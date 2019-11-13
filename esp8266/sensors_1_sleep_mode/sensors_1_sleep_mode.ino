@@ -52,12 +52,10 @@ void setup() {
   //float l_pct = 100 - ((l - MIN_VALUE) * 100 / (MAX_VALUE - MIN_VALUE));
 
   String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
-  //mqttClient.publish("temperature_inside", String(t).c_str());
-  mqttClient.publish("temperature_inside", t_msg.c_str());
+  mqttClient.publish("temperature", t_msg.c_str());
 
   String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
-  //mqttClient.publish("humidity_inside", String(h).c_str());
-  mqttClient.publish("humidity_inside", h_msg.c_str());
+  mqttClient.publish("humidity", h_msg.c_str());
 
   //mqttClient.publish("luminosity", String(l_pct).c_str());
 

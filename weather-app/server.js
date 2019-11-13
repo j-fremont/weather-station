@@ -76,19 +76,21 @@ client.on('connect', () => {
 client.on('message', (topic, message) => { // Topic messages
 
   console.log('message from topic ' + topic + ' - message : ' + message);
+  
+  const json = JSON.parse(message);
 
   switch (topic) {
     case 'temperature':
-      writeTemperature(JSON.parse(message));
-      emit('sock_temperature', JSON.parse(message));
+      writeTemperature(json);
+      emit('sock_temperature', json);
       break;
     case 'humidity':
-      writeHumidity(JSON.parse(message));
-      emit('sock_humidity', message);
+      writeHumidity(json);
+      emit('sock_humidity', json);
       break;
     case 'luminosity':
-      writeLuminosity(JSON.parse(message));
-      emit('sock_luminosity', message);
+      writeLuminosity(json);
+      emit('sock_luminosity', json);
       break;
     default:
       console.log('Topic ' + topic + 'unknown...');

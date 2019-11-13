@@ -38,6 +38,10 @@ export default class MyContainer extends React.Component {
 
     this.updateSensors();
     this.updateCharts();
+    
+    setInterval(() => {
+      this.updateCharts();
+    }, config.interval.query);
 
     socket.on('connect', () => {
       console.log("Connected to the server socket...");

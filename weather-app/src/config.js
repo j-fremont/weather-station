@@ -2,7 +2,7 @@
 var config = module.exports = {};
 
 config.influxdb = {
-  host: '192.168.1.10'
+  host: 'localhost'
 };
 
 config.mqtt = {
@@ -16,8 +16,7 @@ config.server = {
 };
 
 config.interval = {
-  emit: 600000, // In ms, between two emissions of the last measurements, from server to clients, through web socket.
-  query: 1000000 // In ms, between two queries in InfluxDB, for the chart update in the clients.
+  query: 1800000 // In ms, between two queries in InfluxDB, for the chart update in the clients.
 };
 
 // In ms, between two measurements stored directly in InfluxDB => see Arduino code.
