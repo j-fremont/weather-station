@@ -17,10 +17,12 @@ PubSubClient mqttClient(espClient);
 
 //const int analogInPin = A0;
 
+const String sensor = String("inside");
+
 void setup() {
-  
+
   Serial.begin(115200);
-  
+
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   pinMode(LED_BUILTIN, OUTPUT);
   while (WiFi.status() != WL_CONNECTED) {
@@ -31,7 +33,7 @@ void setup() {
   }
 
   Serial.println("WiFi connected...");
-  
+
   mqttClient.setServer(MOSQUITTO_IP, 1883);
 
   while (!mqttClient.connected()) {
@@ -49,12 +51,18 @@ void setup() {
   //float l_pct = map(l, 25, 800, 0, 100);
   //float l_pct = 100 - ((l - MIN_VALUE) * 100 / (MAX_VALUE - MIN_VALUE));
 
-  mqttClient.publish("temperature_inside", String(t).c_str());
-  mqttClient.publish("humidity_inside", String(h).c_str());
+  String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
+  //mqttClient.publish("temperature_inside", String(t).c_str());
+  mqttClient.publish("temperature_inside", t_msg.c_str());
+
+  String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
+  //mqttClient.publish("humidity_inside", String(h).c_str());
+  mqttClient.publish("humidity_inside", h_msg.c_str());
+
   //mqttClient.publish("luminosity", String(l_pct).c_str());
 
   delay(1000); // Time to finish pub before sleeping
-  
+
   Serial.println("Go to sleep...");
 
   ESP.deepSleep(600e6); // 10 minutes...
@@ -63,4 +71,3 @@ void setup() {
 void loop() {
 
 }
-

@@ -32,32 +32,32 @@ const influx = new Influx.InfluxDB({ // InfluxDB schema
   }]
 });
 
-const writeTemperature = (sensor, value) => {
+const writeTemperature = (message) => {
   influx.writePoints([{ // ...and add a new point in InfluxDB.
     measurement: 'weather',
-    tags: { sensor: sensor },
+    tags: { sensor: message.sensor },
     fields: {
-      temperature: value
+      temperature: message.value
     }
   }]);
 };
 
-const writeHumidity = (sensor, value) => {
+const writeHumidity = (message) => {
   influx.writePoints([{ // ...and add a new point in InfluxDB.
     measurement: 'weather',
-    tags: { sensor: sensor },
+    tags: { sensor: message.sensor },
     fields: {
-      humidity: value
+      humidity: message.value
     }
   }]);
 };
 
-const writeLuminosity = (sensor, value) => {
+const writeLuminosity = (message) => {
   influx.writePoints([{ // ...and add a new point in InfluxDB.
     measurement: 'weather',
-    tags: { sensor: sensor },
+    tags: { sensor: message.sensor },
     fields: {
-      luminosity: value
+      luminosity: message.value
     }
   }]);
 };
@@ -68,39 +68,27 @@ client.on('connect', () => {
 
   console.log('connection mqtt topics');
 
-  client.subscribe('temperature_inside'); // Topic subscriptions
-  client.subscribe('temperature_outside');
-  client.subscribe('humidity_inside');
-  client.subscribe('humidity_outside');
-  client.subscribe('luminosity_outside');
+  client.subscribe('temperature'); // Topic subscriptions
+  client.subscribe('humidity');
+  client.subscribe('luminosity');
 });
 
 client.on('message', (topic, message) => { // Topic messages
 
   console.log('message from topic ' + topic + ' - message : ' + message);
 
-  const value = parseFloat(message).toFixed(1).toString();
-
   switch (topic) {
-    case 'temperature_inside':
-      writeTemperature('inside', value);
-      emit('sock_temperature_inside', value);
+    case 'temperature':
+      writeTemperature(JSON.parse(message));
+      emit('sock_temperature', JSON.parse(message));
       break;
-    case 'temperature_outside':
-      writeTemperature('outside', value);
-      emit('sock_temperature_outside', value);
+    case 'humidity':
+      writeHumidity(JSON.parse(message));
+      emit('sock_humidity', message);
       break;
-    case 'humidity_inside':
-      writeHumidity('inside', value);
-      emit('sock_humidity_inside', value);
-      break;
-    case 'humidity_outside':
-      writeHumidity('outside', value);
-      emit('sock_humidity_outside', value);
-      break;
-    case 'luminosity_outside':
-      writeLuminosity('outside', value);
-      emit('sock_luminosity_outside', value);
+    case 'luminosity':
+      writeLuminosity(JSON.parse(message));
+      emit('sock_luminosity', message);
       break;
     default:
       console.log('Topic ' + topic + 'unknown...');

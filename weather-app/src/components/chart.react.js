@@ -1,12 +1,10 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import axios from "axios";
-
-const config = require('../config');
 
 export default class MyChart extends React.Component {
 
   currentLineChart = () => {
+
     if (this.props.mode === 'inside') {
       return (
         <LineChart

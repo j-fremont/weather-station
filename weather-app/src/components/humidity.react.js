@@ -1,32 +1,9 @@
 import React from 'react';
-import io from "socket.io-client";
-
-const config = require('../config');
-
-const socket = io('ws://' + config.server.host + ':' + config.server.port);
 
 export default class MyHumidity extends React.Component {
-  /*constructor(props) {
-    super(props)
-    this.state = {
-      humidity: undefined
-    }
-  }
-
-  componentDidMount() {
-
-    socket.on('connect', () => {
-      console.log("Connected to the server socket...");
-    });
-
-    socket.on(this.props.socket, (payload) => {
-      this.setState({
-        humidity: payload
-      });
-    })
-  };*/
 
   render() {
+
     return (
       <div class='my_toast'>
         <svg

@@ -23,7 +23,7 @@ router.get('/:mode', function(req, res, next) {
 
   var mode = req.param("mode");
 
-  influx.query("select temperature, humidity, luminosity from weather where sensor='" + mode + "' group by * order by desc limit 1").then(results => {
+  influx.query("select last(temperature) as temperature, last(humidity) as humidity, last(luminosity) as luminosity from weather where sensor='" + mode + "'").then(results => {
     res.send(results);
   });
 });

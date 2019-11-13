@@ -10,7 +10,7 @@ const style = {
 export default class MyMedia extends React.Component {
 
   modeName = () => {
-    console.log(this.props.mode)
+
     switch(this.props.mode) {
       case 'inside':
         return 'Capteurs intérieurs';
