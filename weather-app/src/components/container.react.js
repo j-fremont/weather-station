@@ -38,7 +38,7 @@ export default class MyContainer extends React.Component {
 
     this.updateSensors();
     this.updateCharts();
-    
+
     setInterval(() => {
       this.updateCharts();
     }, config.interval.query);
@@ -103,24 +103,29 @@ export default class MyContainer extends React.Component {
   }
 
   updateSensors = () => {
-    axios.get("http://" + config.server.host + ":" + config.server.port + "/last/" + this.state.mode).then((response) => {
-      this.setState({
-        ...this.state,
-        last: response.data[0]
+    if (this.state.mode === 'inside' || this.state.mode === 'outside') {
+      axios.get("http://" + config.server.host + ":" + config.server.port + "/last/" + this.state.mode).then((response) => {
+        this.setState({
+          ...this.state,
+          last: response.data[0]
+        });
       });
-    });
+    }
   }
 
   updateCharts = () => {
-    axios.get("http://" + config.server.host + ":" + config.server.port + "/history/" + this.state.mode + "/" + this.state.mean).then((response) => {
-      this.setState({
-        ...this.state,
-        points: response.data
+    if (this.state.mode === 'inside' || this.state.mode === 'outside') {
+      axios.get("http://" + config.server.host + ":" + config.server.port + "/history/" + this.state.mode + "/" + this.state.mean).then((response) => {
+        this.setState({
+          ...this.state,
+          points: response.data
+        });
       });
-    });
+    }
   }
 
   currentContainer = () => {
+
     if (this.state.mode === 'inside' || this.state.mode === 'outside') {
       return (
         <MyContainerSensor

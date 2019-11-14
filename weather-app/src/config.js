@@ -2,7 +2,7 @@
 var config = module.exports = {};
 
 config.influxdb = {
-  host: 'localhost'
+  host: '192.168.1.10'
 };
 
 config.mqtt = {
