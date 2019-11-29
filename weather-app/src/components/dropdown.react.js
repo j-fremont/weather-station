@@ -26,6 +26,7 @@ export default class MyDropdown extends React.Component {
           <DropdownItem header>Capteurs</DropdownItem>
           <DropdownItem onClick={() => this.props.changeMode('inside')}>Intérieur</DropdownItem>
           <DropdownItem onClick={() => this.props.changeMode('outside')}>Extérieur</DropdownItem>
+          <DropdownItem onClick={() => this.props.changeMode('bathroom')}>Salle de bains</DropdownItem>
           <DropdownItem divider />
           <DropdownItem header>Commandes</DropdownItem>
           <DropdownItem onClick={() => this.props.changeMode('command')}>Commandes</DropdownItem>

@@ -16,8 +16,12 @@ export default class MyMedia extends React.Component {
         return 'Capteurs intérieurs';
       case 'outside':
         return 'Capteurs extérieurs';
+      case 'bathroom':
+        return 'Capteurs salle de bains';
       case 'command':
         return 'Mode commande';
+      case 'config':
+        return 'Mode configuration';
       default:
         return 'Mode inconnu';
     }

@@ -11,7 +11,7 @@ export default class MyContainerSensor extends React.Component {
 
   currentSensors = () => {
 
-    if (this.props.mode === 'inside') {
+    if (['inside','bathroom'].includes(this.props.mode)) {
       return (
         <Col xs="1">
           <MyTemperature value={this.props.last.temperature} />
@@ -22,7 +22,6 @@ export default class MyContainerSensor extends React.Component {
       return (
         <Col xs="1">
           <MyTemperature value={this.props.last.temperature} />
-          <MyHumidity value={this.props.last.humidity} />
           <MyLuminosity value={this.props.last.luminosity} />
           <MyPressure value={this.props.last.pressure} />
         </Col>

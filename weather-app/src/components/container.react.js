@@ -127,7 +127,7 @@ export default class MyContainer extends React.Component {
 
   currentContainer = () => {
 
-    if (this.state.mode === 'inside' || this.state.mode === 'outside') {
+    if (['inside','outside','bathroom'].includes(this.state.mode)) {
       return (
         <MyContainerSensor
           mode={this.state.mode}

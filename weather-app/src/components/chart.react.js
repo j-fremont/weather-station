@@ -1,11 +1,12 @@
 import React from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default class MyChart extends React.Component {
 
   currentLineChart = () => {
 
-    if (this.props.mode === 'inside') {
+    if (['inside','bathroom'].includes(this.props.mode)) {
       return (
         <LineChart
           data={this.props.points}
@@ -30,8 +31,8 @@ export default class MyChart extends React.Component {
           <YAxis yAxisId="percents" orientation="right" />
           <Tooltip/>
           <Line yAxisId="degres" type='monotone' dataKey='temperature' stroke='#154360' />
-          <Line yAxisId="percents" type='monotone' dataKey='humidity' stroke='#1e8449' />
           <Line yAxisId="percents" type='monotone' dataKey='luminosity' stroke='#d4ac0d' />
+          <Line yAxisId="hpa" type='monotone' dataKey='pressure' stroke='#a93226' />
         </LineChart>
       );
     }
