@@ -4,6 +4,7 @@ import MyMedia from './media.react';
 import MyDropdown from './dropdown.react';
 import MyContainerSensor from './container.sensor.react';
 import MyContainerCommand from './container.command.react';
+import MyContainerConfig from './container.config.react';
 import axios from "axios";
 import io from "socket.io-client";
 
@@ -134,9 +135,13 @@ export default class MyContainer extends React.Component {
           points={this.state.points}
           changeMean={this.changeMean} />
         );
-    } else {
+    } else if (this.state.mode === 'command') {
       return (
         <MyContainerCommand />
+      );
+    } else {
+      return (
+        <MyContainerConfig />
       );
     }
   }

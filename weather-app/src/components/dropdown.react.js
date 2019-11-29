@@ -29,6 +29,7 @@ export default class MyDropdown extends React.Component {
           <DropdownItem divider />
           <DropdownItem header>Commandes</DropdownItem>
           <DropdownItem onClick={() => this.props.changeMode('command')}>Commandes</DropdownItem>
+          <DropdownItem onClick={() => this.props.changeMode('config')}>Configuration</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );

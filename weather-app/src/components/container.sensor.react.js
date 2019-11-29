@@ -1,8 +1,9 @@
 import React from 'react';
 import { Container, Row, Col } from 'reactstrap';
-import MyTemperature from './temperature.react';
-import MyHumidity from './humidity.react';
-import MyLuminosity from './luminosity.react';
+import MyTemperature from './sensors/temperature.react';
+import MyHumidity from './sensors/humidity.react';
+import MyLuminosity from './sensors/luminosity.react';
+import MyPressure from './sensors/pressure.react';
 import MyChart from './chart.react';
 import MyControls from './controls.react';
 
@@ -23,6 +24,7 @@ export default class MyContainerSensor extends React.Component {
           <MyTemperature value={this.props.last.temperature} />
           <MyHumidity value={this.props.last.humidity} />
           <MyLuminosity value={this.props.last.luminosity} />
+          <MyPressure value={this.props.last.pressure} />
         </Col>
       );
     }
