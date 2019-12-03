@@ -11,7 +11,7 @@ config.mqtt = {
 };
 
 config.server = {
-  host: 'localhost',
+  host: 'littlerabbits.no-ip.biz',
   port: 9000
 };
 

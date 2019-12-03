@@ -26,7 +26,8 @@ const influx = new Influx.InfluxDB({ // InfluxDB schema
     fields: {
        temperature: Influx.FieldType.FLOAT,
        humidity: Influx.FieldType.FLOAT,
-       luminosity: Influx.FieldType.FLOAT
+       luminosity: Influx.FieldType.FLOAT,
+       pressure: Influx.FieldType.FLOAT
     },
     tags: ['sensor']
   }]
@@ -62,6 +63,16 @@ const writeLuminosity = (message) => {
   }]);
 };
 
+const writePressure = (message) => {
+  influx.writePoints([{ // ...and add a new point in InfluxDB.
+    measurement: 'weather',
+    tags: { sensor: message.sensor },
+    fields: {
+      pressure: message.value
+    }
+  }]);
+};
+
 var client = mqtt.connect('mqtt://' + config.mqtt.host + ':' + config.mqtt.port);
 
 client.on('connect', () => {
@@ -71,6 +82,7 @@ client.on('connect', () => {
   client.subscribe('temperature'); // Topic subscriptions
   client.subscribe('humidity');
   client.subscribe('luminosity');
+  client.subscribe('pressure');
 });
 
 client.on('message', (topic, message) => { // Topic messages
@@ -91,6 +103,10 @@ client.on('message', (topic, message) => { // Topic messages
     case 'luminosity':
       writeLuminosity(json);
       emit('sock_luminosity', json);
+      break;
+    case 'pressure':
+      writePressure(json);
+      emit('sock_pressure', json);
       break;
     default:
       console.log('Topic ' + topic + 'unknown...');

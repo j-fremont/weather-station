@@ -21,7 +21,8 @@ export default class MyContainer extends React.Component {
       last: {
         temperature: 0,
         humidity: 0,
-        luminosity: 0
+        luminosity: 0,
+        pressure: 0
       },
       points: [] // Points for the chart.
     }
@@ -74,6 +75,17 @@ export default class MyContainer extends React.Component {
       if (this.state.mode===payload.sensor) {
         var last = this.state.last;
         last.luminosity = payload.value;
+        this.setState({
+          ...this.state,
+          last
+        });
+      }
+    });
+    
+    socket.on('sock_pressure', (payload) => {  // Subscribe to realtime pressure on web socket.
+      if (this.state.mode===payload.sensor) {
+        var last = this.state.last;
+        last.pressure = payload.value;
         this.setState({
           ...this.state,
           last
