@@ -15,8 +15,6 @@ DHT dht(DHTPIN, DHTTYPE);
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 
-//const int analogInPin = A0;
-
 const String sensor = String("inside");
 
 void setup() {
@@ -47,17 +45,12 @@ void setup() {
 
   float h = dht.readHumidity();
   float t = dht.readTemperature();
-  //int l = analogRead(analogInPin);
-  //float l_pct = map(l, 25, 800, 0, 100);
-  //float l_pct = 100 - ((l - MIN_VALUE) * 100 / (MAX_VALUE - MIN_VALUE));
 
   String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
   mqttClient.publish("temperature", t_msg.c_str());
 
   String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
   mqttClient.publish("humidity", h_msg.c_str());
-
-  //mqttClient.publish("luminosity", String(l_pct).c_str());
 
   delay(1000); // Time to finish pub before sleeping
 
