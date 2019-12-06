@@ -26,9 +26,15 @@ export default class MyPressure extends React.Component {
             </text>
             <text
               x={10}
-              y={80}
+              y={65}
               fill={'white'}
-              font-size={'16px'}>{this.props.value}hPa
+              font-size={'30px'}>{this.props.value}
+            </text>
+            <text
+              x={10}
+              y={85}
+              fill={'white'}
+              font-size={'16px'}>hPa
             </text>
           </g>
         </svg>

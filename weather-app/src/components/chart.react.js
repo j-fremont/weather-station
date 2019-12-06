@@ -32,11 +32,12 @@ export default class MyChart extends React.Component {
           <Tooltip/>
           <Line yAxisId="degres" type='monotone' dataKey='temperature' stroke='#154360' />
           <Line yAxisId="percents" type='monotone' dataKey='luminosity' stroke='#d4ac0d' />
-          <Line yAxisId="hpa" type='monotone' dataKey='pressure' stroke='#a93226' />
         </LineChart>
       );
     }
   }
+
+// <Line yAxisId="hpa" type='monotone' dataKey='pressure' stroke='#a93226' />
 
   render() {
 

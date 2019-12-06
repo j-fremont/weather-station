@@ -25,7 +25,7 @@ router.get('/:mode/:mean', function(req, res, next) {
   var mode = req.param("mode");
   var mean = req.param("mean");
 
-  influx.query("select mean(temperature) as temperature, mean(humidity) as humidity, mean(luminosity) as luminosity, select(pressure) as pressure from weather where sensor='" + mode + "' group by time(" + mean + ") fill(0) order by desc limit 48").then(results => {
+  influx.query("select mean(temperature) as temperature, mean(humidity) as humidity, mean(luminosity) as luminosity, mean(pressure) as pressure from weather where sensor='" + mode + "' group by time(" + mean + ") fill(0) order by desc limit 48").then(results => {
 
     var points = [];
 

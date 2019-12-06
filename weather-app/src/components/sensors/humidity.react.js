@@ -26,9 +26,15 @@ export default class MyHumidity extends React.Component {
             </text>
             <text
               x={10}
-              y={80}
+              y={65}
               fill={'white'}
-              font-size={'32px'}>{this.props.value}%
+              font-size={'30px'}>{this.props.value}
+            </text>
+            <text
+              x={10}
+              y={85}
+              fill={'white'}
+              font-size={'16px'}>%
             </text>
           </g>
         </svg>
