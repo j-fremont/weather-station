@@ -16,3 +16,8 @@ Run the client.
 ```
 [weather-app]$ npm start
 ```
+
+Run the client and the server concurrently.
+```
+[weather-app]$ npm run dev
+```
