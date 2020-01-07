@@ -26,3 +26,11 @@ Build Docker image.
 ```
 [weather-app]$ docker build -t weather-app .
 ```
+
+Run Docker image.
+```
+[weather-app]$ run -d -p 3000:3000 \
+-e INFLUXDB_HOST='localhost' \
+-e MQTT_HOST='localhost' \
+-e NODEJS_HOST='localhost' weather-app
+```
