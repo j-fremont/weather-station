@@ -19,4 +19,10 @@ Load dependencies.
 [weather-app]$ npm install --save mqtt
 [weather-app]$ npm install --save influx
 [weather-app]$ npm install --save axios
+[weather-app]$ npm install --save concurrently
+```
+
+Build Docker image.
+```
+[weather-app]$ docker build -t weather-app .
 ```
