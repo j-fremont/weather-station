@@ -29,7 +29,7 @@ Build Docker image.
 
 Run Docker image.
 ```
-[weather-app]$ run -d -p 3000:3000 \
+[weather-app]$ docker run -d -p 3000:3000 \
 -e INFLUXDB_HOST='localhost' \
 -e MQTT_HOST='localhost' \
 -e NODEJS_HOST='localhost' weather-app
