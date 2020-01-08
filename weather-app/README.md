@@ -34,3 +34,5 @@ Run Docker image.
 -e MQTT_HOST='localhost' \
 -e NODEJS_HOST='localhost' weather-app
 ```
+
+Or try https://hub.docker.com/r/hypriot/rpi-node.
