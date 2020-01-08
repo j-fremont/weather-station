@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  rpi-influxdb:
+    image: rpi-alpine-influxdb:latest 
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '8086:0886'
+    volumes:
+      - influxdb:/var/lib/influxdb
+  rpi-mosquitto:
+    image: rpi-alpine-mosquitto:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '1883:1883'
+  weather-app:
+    image: weather-app:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '3005:3000'
+    depends_on:
+      - rpi-influxdb
+      - rpi-mosquitto
+    environment:
+      - 'INFLUXDB_HOST=localhost'
+      - 'MQTT_HOST=localhost'
+      - 'NODEJS_HOST=localhost'
+  
+volumes:
+  influxdb:
+
+networks:
+  weather:

@@ -1,12 +1,10 @@
-FROM alpine:3.7
+FROM hypriot/rpi-alpine-scratch
 
-RUN apk update && apk add nodejs && apk add gettext
+RUN apk update && apk add nodejs gettext
 
 WORKDIR /usr/src/app
 
 COPY ./ ./
-
-WORKDIR /usr/src/app
 
 RUN npm install
 
