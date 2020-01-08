@@ -21,3 +21,15 @@ Run the client and the server concurrently.
 ```
 [weather-app]$ npm run dev
 ```
+
+## With Docker
+
+Pull, configure and run hypriot/rpi-noip image (https://hub.docker.com/r/hypriot/rpi-noip).
+```
+$ docker pull hypriot/rpi-noip
+```
+
+Start multi-container application.
+```
+$ docker-compose up -d
+```
