@@ -33,3 +33,5 @@ Start multi-container application.
 ```
 $ docker-compose up -d
 ```
+
+Test du conteneur rpi-node mais pas la bonne version de node et npm.
