@@ -2,14 +2,15 @@ version: '3.4'
 
 services:
   rpi-influxdb:
-    image: rpi-alpine-influxdb:latest 
+    image: influxdb:latest
     restart: always
     networks:
       - weather
     ports:
-      - '8086:0886'
+      - '8083:8083'
+      - '8086:8086'
     volumes:
-      - influxdb:/var/lib/influxdb
+      - /srv/docker/influxdb:/var/lib/influxdb
   rpi-mosquitto:
     image: rpi-alpine-mosquitto:latest
     restart: always
@@ -23,17 +24,35 @@ services:
     networks:
       - weather
     ports:
-      - '3005:3000'
+      - '3000:3000'
+      - '9000:9000'
     depends_on:
       - rpi-influxdb
       - rpi-mosquitto
-    environment:
-      - 'INFLUXDB_HOST=localhost'
-      - 'MQTT_HOST=localhost'
-      - 'NODEJS_HOST=localhost'
-  
-volumes:
-  influxdb:
+#  no-ip:
+#    image: hypriot/rpi-noip
+#    restart: always
+#    networks:
+#      - weather
+#    volumes:
+#      - noip:/usr/local/etc/
+  rpi-grafana:
+    image: grafana/grafana
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '3005:3000'
+  rpi-nginx:
+    image: rpi-nginx-reverse-proxy:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '80:80'
+
+#volumes:
+#  noip:
 
 networks:
   weather:
