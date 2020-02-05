@@ -29,4 +29,6 @@ router.get('/:mode', function(req, res, next) {
   });
 });
 
+// fill(0) à la fin de la requête pour les valeurs par défaut ne fonctionne pas : https://github.com/influxdata/influxdb/issues/6967
+
 module.exports = router;

@@ -34,25 +34,33 @@ void setup() {
 
   mqttClient.setServer(MOSQUITTO_IP, 1883);
 
-  while (!mqttClient.connected()) {
+  /*while (!mqttClient.connected()) {
     if (!mqttClient.connect("ESP8266")) {
       Serial.println("MQTT reconnect...");
       delay(5000);
     }
+  }*/
+
+  mqttClient.connect("ESP8266");
+  Serial.println("MQTT connect...");
+  delay(5000);
+
+  if (mqttClient.connected()) {
+
+    dht.begin();
+  
+    float h = dht.readHumidity();
+    float t = dht.readTemperature();
+  
+    String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
+    mqttClient.publish("temperature", t_msg.c_str());
+  
+    String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
+    mqttClient.publish("humidity", h_msg.c_str());
+  
+    delay(1000); // Time to finish pub before sleeping
+  
   }
-
-  dht.begin();
-
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-
-  String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
-  mqttClient.publish("temperature", t_msg.c_str());
-
-  String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
-  mqttClient.publish("humidity", h_msg.c_str());
-
-  delay(1000); // Time to finish pub before sleeping
 
   Serial.println("Go to sleep...");
 

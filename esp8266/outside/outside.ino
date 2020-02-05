@@ -30,8 +30,10 @@ void setup() {
 
   Serial.begin(9600);
 
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
   pinMode(LED_BUILTIN, OUTPUT);
+
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  
   while (WiFi.status() != WL_CONNECTED) {
     digitalWrite(LED_BUILTIN,HIGH);
     delay(250);
@@ -43,48 +45,58 @@ void setup() {
 
   mqttClient.setServer(MOSQUITTO_IP, 1883);
 
+/*
   while (!mqttClient.connected()) {
     if (!mqttClient.connect("ESP8266")) {
       Serial.println("MQTT reconnect...");
       delay(5000);
     }
   }
+*/
 
-  Wire.begin(SDAI2CPIN, SCLI2CPIN);
+  mqttClient.connect("ESP8266");
+  Serial.println("MQTT connect...");
+  delay(5000);
+
+  if (mqttClient.connected()) {
+
+    Wire.begin(SDAI2CPIN, SCLI2CPIN);
+    
+    bmp280.begin(BMP280ADDR);
   
-  bmp280.begin(BMP280ADDR);
-
-  t = bmp280.readTemperature();
-  p = bmp280.readPressure()/100;
-
-  if (tsl.begin())
-  {
-    Serial.println("Found a TSL2591 sensor");
-    uint32_t lum = tsl.getFullLuminosity();
-    if (lum==0) {
-      l=0;
-    } else {
-      uint16_t ir, full;
-      ir = lum >> 16;
-      full = lum & 0xFFFF;
-      l = tsl.calculateLux(full, ir); 
+    t = bmp280.readTemperature();
+    p = bmp280.readPressure()/100;
+  
+    if (tsl.begin())
+    {
+      Serial.println("Found a TSL2591 sensor");
+      uint32_t lum = tsl.getFullLuminosity();
+      if (lum==0) {
+        l=0;
+      } else {
+        uint16_t ir, full;
+        ir = lum >> 16;
+        full = lum & 0xFFFF;
+        l = tsl.calculateLux(full, ir); 
+      }
     }
-  }
-  else
-  {
-    Serial.println("No TSL2591 sensor found ... check your wiring?");
-  }
+    else
+    {
+      Serial.println("No TSL2591 sensor found ... check your wiring?");
+    }
+    
+    String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t,1) + String("}");
+    mqttClient.publish("temperature", t_msg.c_str());
   
-  String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t,1) + String("}");
-  mqttClient.publish("temperature", t_msg.c_str());
-
-  String p_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(p,1) + String("}");
-  mqttClient.publish("pressure", p_msg.c_str());
-
-  String l_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(l,1) + String("}");
-  mqttClient.publish("luminosity", l_msg.c_str());
+    String p_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(p,1) + String("}");
+    mqttClient.publish("pressure", p_msg.c_str());
   
-  delay(1000); // Time to finish pub before sleeping
+    String l_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(l,1) + String("}");
+    mqttClient.publish("luminosity", l_msg.c_str());
+    
+    delay(1000); // Time to finish pub before sleeping
+
+  }
 
   Serial.println("Go to sleep...");
 
