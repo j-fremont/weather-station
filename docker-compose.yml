@@ -29,6 +29,19 @@ services:
     depends_on:
       - rpi-influxdb
       - rpi-mosquitto
+    environment:
+      - INFLUXDB_HOST=192.168.1.10
+      - MQTT_HOST=192.168.1.10
+      - NODEJS_HOST=localhost
+  weather-mqtt:
+    image: weather-mqtt-test:latest
+    restart: always
+    networks:
+      - weather
+    depends_on:
+      - rpi-mosquitto
+    environment:
+      - MOSQUITTO_HOST=192.168.1.10
 #  no-ip:
 #    image: hypriot/rpi-noip
 #    restart: always

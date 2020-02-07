@@ -2,16 +2,16 @@
 var config = module.exports = {};
 
 config.influxdb = {
-  host: '$INFLUXDB_HOST'
+  host: '${INFLUXDB_HOST}'
 };
 
 config.mqtt = {
-  host: '$MQTT_HOST',
+  host: '${MQTT_HOST}',
   port: 1883
 };
 
 config.server = {
-  host: '$NODEJS_HOST',
+  host: '${NODEJS_HOST}',
   port: 9000
 };
 
