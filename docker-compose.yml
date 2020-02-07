@@ -24,7 +24,7 @@ services:
     networks:
       - weather
     ports:
-      - '3000:3000'
+      - '3004:3000'
       - '9000:9000'
     depends_on:
       - rpi-influxdb
@@ -43,13 +43,13 @@ services:
       - weather
     ports:
       - '3005:3000'
-  rpi-nginx:
-    image: rpi-nginx-reverse-proxy:latest
-    restart: always
-    networks:
-      - weather
-    ports:
-      - '80:80'
+#  rpi-nginx:
+#    image: rpi-nginx-reverse-proxy:latest
+#    restart: always
+#    networks:
+#      - weather
+#    ports:
+#      - '80:80'
 
 #volumes:
 #  noip:

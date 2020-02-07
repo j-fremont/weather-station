@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
-MOSQUITTO_HOST=localhost
+#MOSQUITTO_HOST=localhost
+MOSQUITTO_HOST=${MOSQUITTO_HOST}
 
 SCALE=1 # Number of digits for floats
 
