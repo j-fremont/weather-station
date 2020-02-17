@@ -9,6 +9,8 @@ services:
     ports:
       - '8083:8083'
       - '8086:8086'
+    environment:
+      - INFLUXDB_DB=homedb
     volumes:
       - /srv/docker/influxdb:/var/lib/influxdb
   rpi-mosquitto:
@@ -56,6 +58,10 @@ services:
       - weather
     ports:
       - '3005:3000'
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
+    volumes:
+      - grafana-storage:/var/lib/grafana
 #  rpi-nginx:
 #    image: rpi-nginx-reverse-proxy:latest
 #    restart: always
@@ -64,8 +70,9 @@ services:
 #    ports:
 #      - '80:80'
 
-#volumes:
+volumes:
 #  noip:
+  grafana-storage:
 
 networks:
   weather:
