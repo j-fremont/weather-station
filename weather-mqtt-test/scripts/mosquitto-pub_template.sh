@@ -46,7 +46,7 @@ send_value() {
   value=$3
   new_value=$(change_value $value)
   echo $new_value # Pass new value from the current subshell $(send_value...) to the calling shell
-  formatted_value=$(echo "scale=$SCALE; $new_value/10" | bc -l)
+  formatted_value=$(echo "scale=$SCALE; $new_value/10" | bc -l | awk '{printf "%.1f\n", $0}')
   message="{\"sensor\":\"$sensor\",\"value\":$formatted_value}"
   mosquitto_pub -h $MOSQUITTO_HOST -t $topic -m $message
 }
