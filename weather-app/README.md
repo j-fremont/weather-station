@@ -22,6 +22,28 @@ Load dependencies.
 [weather-app]$ npm install --save concurrently
 ```
 
+Install.
+
+```
+[weather-app]$ npm install
+```
+
+Run the server.
+```
+[weather-app]$ node server.js
+```
+
+Run the client.
+```
+[weather-app]$ npm start
+```
+
+Run the client and the server concurrently.
+```
+[weather-app]$ npm run dev
+```
+
+
 Build Docker image.
 ```
 [weather-app]$ docker build -t weather-app .
