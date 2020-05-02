@@ -1,25 +1,21 @@
 
 # weather-app
 
-Create the app.
+Create and load dependencies.
 
-```
+```bash
 $ npm install -g create-react-app
-```
-
-```
+...
+$ cd weather-station
 [weather-station]$ create-react-app weather-app
-```
-
-Load dependencies.
-
-```
+...
+$ cd weather-app
 [weather-app]$ npm install --save react react-dom
 [weather-app]$ npm install --save bootstrap reactstrap
 [weather-app]$ npm install --save mqtt
 [weather-app]$ npm install --save influx
 [weather-app]$ npm install --save axios
-[weather-app]$ npm install --save concurrently
+[weather-app]$ npm install --save concurrently 
 ```
 
 Install.
@@ -43,6 +39,7 @@ Run the client and the server concurrently.
 [weather-app]$ npm run dev
 ```
 
+## With Docker
 
 Build Docker image.
 ```
