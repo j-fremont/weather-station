@@ -84,16 +84,22 @@ void setup() {
     {
       Serial.println("No TSL2591 sensor found ... check your wiring?");
     }
+
+    if (!isnan(t)) {
+      String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t,1) + String("}");
+      mqttClient.publish("temperature", t_msg.c_str());
+    }
     
-    String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t,1) + String("}");
-    mqttClient.publish("temperature", t_msg.c_str());
-  
-    String p_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(p,1) + String("}");
-    mqttClient.publish("pressure", p_msg.c_str());
-  
-    String l_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(l,1) + String("}");
-    mqttClient.publish("luminosity", l_msg.c_str());
-    
+    if (!isnan(p)) {
+      String p_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(p,1) + String("}");
+      mqttClient.publish("pressure", p_msg.c_str());
+    }
+
+    if (!isnan(l)) {
+      String l_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(l,1) + String("}");
+      mqttClient.publish("luminosity", l_msg.c_str());
+    }
+   
     delay(1000); // Time to finish pub before sleeping
 
   }
@@ -106,4 +112,3 @@ void setup() {
 void loop() {
 
 }
-

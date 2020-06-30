@@ -49,14 +49,19 @@ void setup() {
 
     dht.begin();
   
-    float h = dht.readHumidity();
     float t = dht.readTemperature();
-  
-    String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
-    mqttClient.publish("temperature", t_msg.c_str());
-  
-    String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
-    mqttClient.publish("humidity", h_msg.c_str());
+    
+    if (!isnan(t)) {
+      String t_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(t) + String("}");
+      mqttClient.publish("temperature", t_msg.c_str());
+    }
+
+    float h = dht.readHumidity();
+
+    if (!isnan(h)) {
+      String h_msg = String("{\"sensor\":\"") + sensor + String("\",\"value\":") + String(h) + String("}");
+      mqttClient.publish("humidity", h_msg.c_str());
+    }
   
     delay(1000); // Time to finish pub before sleeping
   
