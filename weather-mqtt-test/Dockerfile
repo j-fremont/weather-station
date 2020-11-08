@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM arm32v7/alpine:latest
 
 RUN apk update && apk add gettext mosquitto-clients bc
 

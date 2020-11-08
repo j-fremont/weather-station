@@ -1,6 +1,6 @@
-FROM hypriot/rpi-alpine-scratch
+FROM arm32v7/alpine:latest
 
-RUN apk update && apk add nodejs gettext
+RUN apk update && apk add nodejs npm gettext
 
 WORKDIR /usr/src/app
 
