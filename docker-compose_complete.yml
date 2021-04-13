@@ -1,0 +1,78 @@
+version: '3.4'
+
+services:
+  rpi-influxdb:
+    image: influxdb:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '8083:8083'
+      - '8086:8086'
+    environment:
+      - INFLUXDB_DB=homedb
+    volumes:
+      - /srv/docker/influxdb:/var/lib/influxdb
+  rpi-mosquitto:
+    image: rpi-alpine-mosquitto:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '1883:1883'
+  weather-app:
+    image: weather-app:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '3004:3000'
+      - '9000:9000'
+    depends_on:
+      - rpi-influxdb
+      - rpi-mosquitto
+    environment:
+      - INFLUXDB_HOST=192.168.1.10
+      - MQTT_HOST=192.168.1.10
+      - NODEJS_HOST=localhost
+#  weather-mqtt:
+#    image: weather-mqtt-test:latest
+#    restart: always
+#    networks:
+#      - weather
+#    depends_on:
+#      - rpi-mosquitto
+#    environment:
+#      - MOSQUITTO_HOST=192.168.1.10
+#  no-ip:
+#    image: hypriot/rpi-noip
+#    restart: always
+#    networks:
+#      - weather
+#    volumes:
+#      - noip:/usr/local/etc/
+  rpi-grafana:
+    image: grafana/grafana
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '3005:3000'
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel
+    volumes:
+      - grafana-storage:/var/lib/grafana
+#  rpi-nginx:
+#    image: rpi-nginx-reverse-proxy:latest
+#    restart: always
+#    networks:
+#      - weather
+#    ports:
+#      - '80:80'
+
+volumes:
+#  noip:
+  grafana-storage:
+
+networks:
+  weather:
