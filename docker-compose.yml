@@ -31,6 +31,21 @@ services:
       - GF_INSTALL_PLUGINS=grafana-clock-panel
     volumes:
       - grafana-storage:/var/lib/grafana
+  weather-app:
+    image: weather-app:latest
+    restart: always
+    networks:
+      - weather
+    ports:
+      - '3004:3000'
+      - '9000:9000'
+    depends_on:
+      - rpi-influxdb
+      - rpi-mosquitto
+    environment:
+      - INFLUXDB_HOST=192.168.1.10
+      - MQTT_HOST=192.168.1.10
+      - NODEJS_HOST=localhost
 
 volumes:
   grafana-storage:
