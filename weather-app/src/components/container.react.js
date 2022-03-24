@@ -116,7 +116,7 @@ export default class MyContainer extends React.Component {
   }
 
   updateSensors = () => {
-    if (this.state.mode === 'inside' || this.state.mode === 'outside') {
+    if (['inside','outside','bathroom'].includes(this.state.mode)) {
       axios.get("http://" + config.server.host + ":" + config.server.port + "/last/" + this.state.mode).then((response) => {
         this.setState({
           ...this.state,
@@ -127,7 +127,7 @@ export default class MyContainer extends React.Component {
   }
 
   updateCharts = () => {
-    if (this.state.mode === 'inside' || this.state.mode === 'outside') {
+    if (['inside','outside','bathroom'].includes(this.state.mode)) {
       axios.get("http://" + config.server.host + ":" + config.server.port + "/history/" + this.state.mode + "/" + this.state.mean).then((response) => {
         this.setState({
           ...this.state,
