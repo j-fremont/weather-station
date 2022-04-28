@@ -13,6 +13,11 @@
 #define SCLI2CPIN 5 // GPIO5 I2C SCL bus
 #define BMP280ADDR 0x76 // Set BMP280 I2C address
 
+IPAddress ipadress(192, 168, 1, 13);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(192, 168, 1, 1);
+
 Adafruit_BMP280 bmp280;
 
 Adafruit_TSL2591 tsl = Adafruit_TSL2591(2591); // pass in a number for the sensor identifier (for your use later)
@@ -29,11 +34,10 @@ void setup() {
   float l = 0;
 
   Serial.begin(9600);
-
-  pinMode(LED_BUILTIN, OUTPUT);
-
+  Serial.println("WiFi connect...");
+  WiFi.config(ipadress, gateway, subnet, dns);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
-  
+  pinMode(LED_BUILTIN, OUTPUT);
   while (WiFi.status() != WL_CONNECTED) {
     digitalWrite(LED_BUILTIN,HIGH);
     delay(250);
@@ -42,6 +46,8 @@ void setup() {
   }
 
   Serial.println("WiFi connected...");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 
   mqttClient.setServer(MOSQUITTO_IP, 1883);
 

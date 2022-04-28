@@ -1,4 +1,4 @@
-#include <PubSubClient.h>
+ #include <PubSubClient.h>
 #include <ESP8266WiFi.h>
 #include <DHT.h>
 
@@ -10,6 +10,11 @@
 #define DHTPIN 4
 #define DHTTYPE DHT11
 
+IPAddress ipadress(192, 168, 1, 12);
+IPAddress gateway(192, 168, 1, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(192, 168, 1, 1);
+
 DHT dht(DHTPIN, DHTTYPE);
 
 WiFiClient espClient;
@@ -18,9 +23,9 @@ PubSubClient mqttClient(espClient);
 const String sensor = String("inside");
 
 void setup() {
-
   Serial.begin(115200);
-
+  Serial.println("WiFi connect...");
+  WiFi.config(ipadress, gateway, subnet, dns);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   pinMode(LED_BUILTIN, OUTPUT);
   while (WiFi.status() != WL_CONNECTED) {
@@ -31,6 +36,8 @@ void setup() {
   }
 
   Serial.println("WiFi connected...");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
 
   mqttClient.setServer(MOSQUITTO_IP, 1883);
 
