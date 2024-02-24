@@ -40,7 +40,9 @@ const writeTemperature = (message) => {
     fields: {
       temperature: message.value
     }
-  }]);
+  }],{
+    precision: 'm'
+  });
 };
 
 const writeHumidity = (message) => {
@@ -50,7 +52,9 @@ const writeHumidity = (message) => {
     fields: {
       humidity: message.value
     }
-  }]);
+  }],{
+    precision: 'm'
+  });
 };
 
 const writeLuminosity = (message) => {
@@ -60,7 +64,9 @@ const writeLuminosity = (message) => {
     fields: {
       luminosity: message.value
     }
-  }]);
+  }],{
+    precision: 'm'
+  });
 };
 
 const writePressure = (message) => {
@@ -70,7 +76,9 @@ const writePressure = (message) => {
     fields: {
       pressure: message.value
     }
-  }]);
+  }],{
+    precision: 'm'
+  });
 };
 
 var client = mqtt.connect('mqtt://' + config.mqtt.host + ':' + config.mqtt.port);
