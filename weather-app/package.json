@@ -7,7 +7,7 @@
     "bootstrap": "^4.3.1",
     "concurrently": "^3.6.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "influx": "^5.4.1",
     "mqtt": "^3.0.0",
     "react": "^16.8.6",
